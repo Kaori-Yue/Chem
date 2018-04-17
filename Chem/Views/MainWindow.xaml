@@ -1,0 +1,47 @@
+﻿<Controls:MetroWindow
+		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chem"
+		xmlns:ViewModel="clr-namespace:Chem.ViewModel"
+        x:Name="metroWindow"
+		x:Class="Chem.Views.MainWindow"
+		mc:Ignorable="d"
+        DataContext="{DynamicResource Wrapper}"
+		Title="MainWindow" Height="800" Width="1200">
+
+    <Controls:MetroWindow.Resources>
+        <ViewModel:Wrapper x:Key="Wrapper"/>
+    </Controls:MetroWindow.Resources>
+
+    <!-- Righet top menu -->
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <ToggleButton Content="Theme" IsChecked="{Binding IsOpen, ElementName=Theme_Flyout}"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+
+    <Grid x:Name="grid">
+        <!-- Flyout Controls -->
+        <Controls:FlyoutsControl>
+            <!-- Theme -->
+            <Controls:Flyout Header="Flyout" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Theme_Flyout" IsOpen="False">
+                <Grid/>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+
+        <Label Content="{Binding Text, ElementName=txt}"/>
+
+        <TextBox x:Name="txt" Width="200" Height="40"  Text="{Binding Theme.ThemeConfig/ComboboxAccentSelected, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, NotifyOnValidationError=True}" Margin="600,0,0,0"/>
+
+        <ComboBox Width="250" Height="100" ItemsSource="{Binding Theme.ComboboxAccent}" SelectedItem="{Binding Theme.ComboboxAccentSelected}"/>
+
+        <TextBox Width="200" Height="40" Margin="796,478,196,251" Text="{Binding tmp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Width="200" Height="40" Margin="796,534,196,195"/>
+        <Button Width="200" Height="25" Content="Click" Command="{Binding Theme.SaveCommand}" Margin="485,478,507,266" CommandParameter="{Binding Theme.ThemeConfig/ComboboxAccentSelected}"></Button>
+    </Grid>
+
+</Controls:MetroWindow>
