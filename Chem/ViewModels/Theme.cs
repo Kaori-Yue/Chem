@@ -10,17 +10,19 @@ using MahApps.Metro;
 using Chem.Helper;
 using Chem.Model;
 using System.Collections.ObjectModel;
+using System.IO.Ports;
 
-namespace Chem.ViewModel
+namespace Chem.ViewModels
 {
     public class Theme : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<Model.Theme> ThemeConfig { get; set; }
+        private Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
         public Theme()
         {
             Console.WriteLine("Cons: Theme");
-            SaveCommand = new RelayCommand(Save);
+            //SaveCommand = new RelayCommand(Save);
             /*
             ThemeConfig = new ObservableCollection<Model.Theme>
             {
@@ -38,35 +40,33 @@ namespace Chem.ViewModel
 
         //
 
-        public RelayCommand SaveCommand { get; set; }
-        //public RelayCommand ChangeAccentCommand { get; set; }
-
         void Save(object parameter)
         {
             Console.WriteLine("Save");
             if (parameter == null) return;
             System.Windows.MessageBox.Show(parameter.ToString());
-            ChangeAccent(parameter.ToString());
+            //ChangeAccent(parameter.ToString());
         }
 
         //string _comboboxAccentSelected;
         private string _ComboboxAccentSelected;
         public string ComboboxAccentSelected
         {
-            get { return _ComboboxAccentSelected; }
-            set { _ComboboxAccentSelected = value; ChangeAccent(value); OnPropertyChanged(); }
+            get { return _ComboboxAccentSelected ?? appStyle.Item2.Name; }
+            set { _ComboboxAccentSelected = value; ChangeAccent(); OnPropertyChanged(); }
+            //set { _comboboxAccentSelected = value; ChangeAccent(_comboboxAccentSelected); OnPropertyChanged(); }
+        }
+        private string _ComboboxBaseSelected;
+        public string ComboboxBaseSelected
+        {
+            get => _ComboboxBaseSelected ?? appStyle.Item1.Name;
+            set {_ComboboxBaseSelected = value; ChangeAccent(); OnPropertyChanged(); }
             //set { _comboboxAccentSelected = value; ChangeAccent(_comboboxAccentSelected); OnPropertyChanged(); }
         }
 
-        private void ChangeAccent(string accent)
-        {
-            Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
-            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, ThemeManager.GetAccent(accent), ThemeManager.GetAppTheme("BaseDark"));
-        }
+        private void ChangeAccent() => ThemeManager.ChangeAppStyle(System.Windows.Application.Current, ThemeManager.GetAccent(ComboboxAccentSelected), ThemeManager.GetAppTheme(ComboboxBaseSelected));
 
-        //
-        // Combobox Accent
-
+        #region ComboboxAccent
         public List<string> ComboboxAccent { get; } = new List<string>(new string[] {
             "Red",
             "Green",
@@ -92,5 +92,12 @@ namespace Chem.ViewModel
             "Taupe",
             "Sienna"
         }.OrderBy(x => x));
+        #endregion
+        #region ComboboxBase
+        public List<string> ComboboxBase { get; } = new List<string>(new string[] {
+            "BaseLight",
+            "BaseDark"
+        });
+        #endregion
     }
 }

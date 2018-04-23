@@ -65,8 +65,10 @@
     </ApplicationDefinition>
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\Theme.cs" />
-    <Compile Include="ViewModel\Theme.cs" />
-    <Compile Include="ViewModel\Wrapper.cs" />
+    <Compile Include="Model\Worker.cs" />
+    <Compile Include="ViewModels\SerialPortViewModel.cs" />
+    <Compile Include="ViewModels\Theme.cs" />
+    <Compile Include="ViewModels\Wrapper.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
