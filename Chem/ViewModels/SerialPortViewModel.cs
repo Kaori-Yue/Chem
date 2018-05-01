@@ -26,12 +26,15 @@ namespace Chem.ViewModels
             #region Bind Button Event
             AddQueueCommand = new RelayCommand(AddQueue);
             RunCommand = new RelayCommand(Run);
+            UpCommand = new RelayCommand(Up);
+            DownCommand = new RelayCommand(Down);
             #endregion
             Console.WriteLine("Cons: SerialPortViewModel");
 
             Worker = new ObservableCollection<Model.Worker> {
                 new Model.Worker { Pump = "Con", Value = "12", Volume = "as", Speed = "asass", Wait = "assaaa" }
             };
+
             //Worker = new List<Model.Worker>();
 
             port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
@@ -104,6 +107,13 @@ namespace Chem.ViewModels
             get { return _Wait; }
             set { _Wait = value; OnPropertyChanged(); }
         }
+
+        private string _Cycle = "1";
+        public string Cycle
+        {
+            get { return _Cycle; }
+            set { _Cycle = value; OnPropertyChanged(); }
+        }
         #endregion
 
 
@@ -111,6 +121,8 @@ namespace Chem.ViewModels
         public RelayCommand SetZeroCommand { get; set; }
         public RelayCommand AddQueueCommand { get; set; }
         public RelayCommand RunCommand { get; set; }
+        public RelayCommand UpCommand { get; set; }
+        public RelayCommand DownCommand { get; set; }
         //public RelayCommand ChangeAccentCommand { get; set; }
         #endregion
 
@@ -132,11 +144,43 @@ namespace Chem.ViewModels
         #region Run
         private void Run(object parameter)
         {
-            Console.WriteLine(Worker.Count);
+            int cycle = Int32.Parse(Cycle);
+            Console.WriteLine(cycle);
+            foreach(Model.Worker worker in Worker)
+            {
+                Console.WriteLine(worker.Speed);
+            }
+        }
+        #endregion
+        #region Up
+        private void Up(object parameter)
+        {
+            int index = Int32.Parse(parameter.ToString());
+            if (index <= 0 || index >= Worker.Count)
+                return;
+            Worker.Move(index, index - 1);
+            /*
+            Model.Worker temp = Worker[index];
+            Worker.RemoveAt(index);
+            Worker.Insert(index - 1, temp);
+            */
+        }
+        #endregion
+        #region Down
+        private void Down(object parameter)
+        {
+            int index = Int32.Parse(parameter.ToString());
+            if (index < 0 || index >= Worker.Count - 1)
+                return;
+            Worker.Move(index, index + 1);
+            /*
+            Model.Worker temp = Worker[index];
+            Worker.RemoveAt(index);
+            Worker.Insert(index + 1, temp);
+            */
         }
         #endregion
         #endregion
-
 
     }
 }
