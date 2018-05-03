@@ -162,36 +162,53 @@ namespace Chem.ViewModels
         #region Run
         private void Run(object parameter)
         {
-            //W//orker.re
-            //SerialPortProgram(Wait);
-            //port.Write(Wait + "");
-            //Console.WriteLine("CCCC:" + Int32.Parse(Cycle));
+            Thread thread = new Thread(new ThreadStart(RunMe));
+            thread.Start();
+            //thread.
+        }
+
+        private void RunMe() {
             int cycle = Int32.Parse(Cycle);
             int water = 0;
             Console.WriteLine(cycle);
+            Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
             {
-                Console.WriteLine("Cycle: " + (i + 1));
-                int tmp_count = 1;
                 foreach (Model.Worker worker in Worker)
                 {
-                    Console.WriteLine("Worker: " + tmp_count++);
                     Console.WriteLine("PUMP: " + worker.Pump);
-                    if (worker.Pump.Equals("L"))
-                    {
-                        api.SetSyring(worker.Volume, worker.Speed);
-                        water = Int32.Parse(worker.Volume);
-                    }
-                    else
-                    {
-                        // right
-                        api.ChangeValve_Release(worker.Value, worker.Volume, worker.Speed);
-                    }
-                    Thread.Sleep(100);
+                    Thread.Sleep(5000);
                 }
-            }
 
+            }
+            //int cycle = Int32.Parse(Cycle);
+            //int water = 0;
+            //Console.WriteLine(cycle);
+            //for (int i = 0; i < cycle; i++)
+            //{
+            //    Console.WriteLine("Cycle: " + (i + 1));
+            //    int tmp_count = 1;
+
+            //    foreach (Model.Worker worker in Worker)
+            //    {
+            //        Console.WriteLine("Worker: " + tmp_count++);
+            //        Console.WriteLine("PUMP: " + worker.Pump);
+            //        if (worker.Pump.Equals("L"))
+            //        {
+            //            api.SetSyring(worker.Volume, worker.Speed);
+            //            water = Int32.Parse(worker.Volume);
+            //        }
+            //        else
+            //        {
+            //            // right
+            //            api.ChangeValve_Release(worker.Value, worker.Volume, worker.Speed);
+
+            //        }
+            //        Thread.Sleep(100);
+            //    }
+            //}
         }
+
         #endregion
         #region Up
         private void Up(object parameter)

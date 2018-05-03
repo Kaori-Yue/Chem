@@ -27,7 +27,7 @@ namespace Chem.Helper
         public void SetSyring(string volume, string speed)
         {
             port.WriteLine("/1IV" + speed + "A" + volume + "R\r");
-            Thread.Sleep(10000);
+            Thread.Sleep(10000); // <<< CHANGE TIMER
 
             //port.WriteLine("/2I5R");
             //port.WriteLine("/1OP6000R");
