@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\API.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Worker.cs" />
@@ -77,6 +78,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\Converters\RadioBoolToIntConverter.cs" />
+    <Compile Include="Views\Converters\RadioBoolToStringConverter.cs" />
     <Compile Include="Views\Converters\Sort.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

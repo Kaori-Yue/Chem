@@ -16,8 +16,9 @@ namespace Chem.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private string _Pump;
-        public string Pump
+        // 1 = LEFT | 2 = RIGHT
+        private int _Pump;
+        public int Pump
         {
             get { return _Pump; }
             set { _Pump = value; OnPropertyChanged(); }

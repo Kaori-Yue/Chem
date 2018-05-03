@@ -16,6 +16,7 @@
 
     <Controls:MetroWindow.Resources>
         <Converters:Sort x:Key="Sort"/>
+        <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"></Converters:RadioBoolToIntConverter>
         <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
     </Controls:MetroWindow.Resources>
 
@@ -72,8 +73,8 @@
         <StackPanel Orientation="Horizontal" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
             <GroupBox Header="Pump" Width="190" Margin="0,0,5,0">
                 <DockPanel>
-                    <RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                    <RadioButton GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right"/>
+                    <RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0" IsChecked="{Binding Pump, ConverterParameter=1, Converter={StaticResource RadioBoolToIntConverter}}"/>
+                    <RadioButton GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right" IsChecked="{Binding Pump, ConverterParameter=2, Converter={StaticResource RadioBoolToIntConverter}}"/>
                 </DockPanel>
             </GroupBox>
             <GroupBox Header="Value" Width="200" Margin="0,0,5,0">
@@ -91,7 +92,7 @@
         </StackPanel>
         <WrapPanel Width="200" Height="100" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Width="100" Height="30" Content="Add Queue" Command="{Binding AddQueueCommand}" Padding="5,6,5,8" Margin="0,0,0,5"/>
-            <Button Width="100" Height="30" Content="Set Zero" Margin="0,0,0,5"></Button>
+            <Button Width="100" Height="30" Content="Set Zero" Margin="0,0,0,5" Command="{Binding SetZeroCommand}"></Button>
             <DockPanel Width="200">
                 <TextBox Width="130" Margin="0,0,0,5" Text="{Binding Cycle}"></TextBox>
                 <Label Content="Cycle" DockPanel.Dock="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,0,5"/>
