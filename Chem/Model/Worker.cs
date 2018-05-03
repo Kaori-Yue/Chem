@@ -17,8 +17,8 @@ namespace Chem.Model
         }
 
         // 1 = LEFT | 2 = RIGHT
-        private int _Pump;
-        public int Pump
+        private string _Pump;
+        public string Pump
         {
             get { return _Pump; }
             set { _Pump = value; OnPropertyChanged(); }

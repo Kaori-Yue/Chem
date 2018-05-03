@@ -17,6 +17,7 @@
     <Controls:MetroWindow.Resources>
         <Converters:Sort x:Key="Sort"/>
         <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"></Converters:RadioBoolToIntConverter>
+        <Converters:RadioBoolToStringConverter x:Key="RadioBoolToStringConverter"/>
         <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
     </Controls:MetroWindow.Resources>
 
@@ -73,8 +74,8 @@
         <StackPanel Orientation="Horizontal" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
             <GroupBox Header="Pump" Width="190" Margin="0,0,5,0">
                 <DockPanel>
-                    <RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0" IsChecked="{Binding Pump, ConverterParameter=1, Converter={StaticResource RadioBoolToIntConverter}}"/>
-                    <RadioButton GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right" IsChecked="{Binding Pump, ConverterParameter=2, Converter={StaticResource RadioBoolToIntConverter}}"/>
+                    <RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0" IsChecked="{Binding Pump, ConverterParameter='L', Converter={StaticResource RadioBoolToStringConverter}}"/>
+                    <RadioButton GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right" IsChecked="{Binding Pump, ConverterParameter='R', Converter={StaticResource RadioBoolToStringConverter}}"/>
                 </DockPanel>
             </GroupBox>
             <GroupBox Header="Value" Width="200" Margin="0,0,5,0">

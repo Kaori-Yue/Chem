@@ -13,7 +13,9 @@ namespace Chem.Views.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string str = (string)value;
-            if (str.Equals(parameter.ToString()))
+            if (String.IsNullOrEmpty(str))
+                return Binding.DoNothing;
+            if (str.ToString().Equals(parameter.ToString()))
                 return true;
             else
                 return false;
@@ -22,6 +24,9 @@ namespace Chem.Views.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return parameter;
+            //if (parameter.ToString().Equals("L")))
+            //    return "L";
+            //return "R";
         }
     }
 }

@@ -125,8 +125,8 @@ namespace Chem.ViewModels
             set { _Cycle = value; OnPropertyChanged(); }
         }
 
-        private int _Pump;
-        public int Pump
+        private string _Pump;
+        public string Pump
         {
             get { return _Pump; }
             set { _Pump = value; OnPropertyChanged(); }
@@ -177,7 +177,7 @@ namespace Chem.ViewModels
                 {
                     Console.WriteLine("Worker: " + tmp_count++);
                     Console.WriteLine("PUMP: " + worker.Pump);
-                    if (worker.Pump == 1)
+                    if (worker.Pump.Equals("L"))
                     {
                         api.SetSyring(worker.Volume, worker.Speed);
                         water = Int32.Parse(worker.Volume);
