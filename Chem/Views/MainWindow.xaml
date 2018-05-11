@@ -47,25 +47,32 @@
             </Controls:Flyout>
             <!-- Queue -->
             <Controls:Flyout Header="Flyout" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
-                <Grid>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Margin="220,0,20,0">
-                            <DataGrid x:Name="queue_datagrid" Width="500" Height="300" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Width="65" Header="Pump" Binding="{Binding Pump}" ></DataGridTextColumn>
-                                    <DataGridTextColumn Width="75" Header="Value" Binding="{Binding Value}" ></DataGridTextColumn>
-                                    <DataGridTextColumn Width="120" Header="Volume" Binding="{Binding Volume}" ></DataGridTextColumn>
-                                    <DataGridTextColumn Width="120" Header="Speed" Binding="{Binding Speed}" ></DataGridTextColumn>
-                                    <DataGridTextColumn Width="120" Header="Wait" Binding="{Binding Wait}" ></DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </StackPanel>
-                        <StackPanel VerticalAlignment="Center">
-                            <Button Width="100" Height="30" Content="Up" Command="{Binding UpCommand}" CommandParameter="{Binding ElementName=queue_datagrid, Path=SelectedIndex}"/>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="220,0,20,0">
+                        <DataGrid x:Name="queue_datagrid" Width="500" Height="300" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
+                            <DataGrid.Background>
+                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                            </DataGrid.Background>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="65" Header="Pump" Binding="{Binding Pump}" ></DataGridTextColumn>
+                                <DataGridTextColumn Width="75" Header="Value" Binding="{Binding Value}" ></DataGridTextColumn>
+                                <DataGridTextColumn Width="120" Header="Volume" Binding="{Binding Volume}" ></DataGridTextColumn>
+                                <DataGridTextColumn Width="120" Header="Speed" Binding="{Binding Speed}" ></DataGridTextColumn>
+                                <DataGridTextColumn Width="120" Header="Wait" Binding="{Binding Wait}" ></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                    <WrapPanel VerticalAlignment="Top" Margin="0,100,0,0">
+                        <StackPanel>
+                            <Button Width="100" Height="30" Content="Up" Command="{Binding UpCommand}" CommandParameter="{Binding ElementName=queue_datagrid, Path=SelectedIndex}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                             <Button Width="100" Height="30" Content="Down" Command="{Binding DownCommand}" CommandParameter="{Binding ElementName=queue_datagrid, Path=SelectedIndex}"/>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel Margin="20,0,0,0">
+                            <Button Width="100" Height="30" Content="Save" Command="{Binding SaveCommand}"/>
+                            <Button Width="100" Height="30" Content="Load" Command="{Binding LoadCommand}"/>
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
@@ -101,6 +108,7 @@
             <Button Width="100" Height="30" Content="Run!" Command="{Binding RunCommand}"/>
         </WrapPanel>
         <!-- TEST -->
+
         <!--   -->
     </Grid>
 

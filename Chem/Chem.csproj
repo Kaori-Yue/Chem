@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\API.cs" />
+    <Compile Include="Helper\Extension.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Model\Worker.cs" />

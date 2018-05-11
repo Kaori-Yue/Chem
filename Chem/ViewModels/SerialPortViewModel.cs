@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -31,6 +32,8 @@ namespace Chem.ViewModels
             RunCommand = new RelayCommand(Run);
             UpCommand = new RelayCommand(Up);
             DownCommand = new RelayCommand(Down);
+            SaveCommand = new RelayCommand(Save);
+            LoadCommand = new RelayCommand(Load);
             #endregion
             Console.WriteLine("Cons: SerialPortViewModel");
 
@@ -39,12 +42,11 @@ namespace Chem.ViewModels
             };
 
             //Worker = new List<Model.Worker>();
-
-            port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
-            port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
             try
             {
+                port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
                 port.Open();
+                port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
                 api = new API(port);
             } catch (Exception e)
             {
@@ -141,6 +143,8 @@ namespace Chem.ViewModels
         public RelayCommand RunCommand { get; set; }
         public RelayCommand UpCommand { get; set; }
         public RelayCommand DownCommand { get; set; }
+        public RelayCommand SaveCommand { get; set; }
+        public RelayCommand LoadCommand { get; set; }
         //public RelayCommand ChangeAccentCommand { get; set; }
         #endregion
 
@@ -237,6 +241,36 @@ namespace Chem.ViewModels
             Worker.Insert(index + 1, temp);
             */
         }
+        #endregion
+        #region Save
+        private void Save(object parameter)
+        {
+
+        }
+        #region Load
+        private void Load(object parameter)
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader("Worker.txt"))
+                {
+                    ObservableCollection<Model.Worker> _worker = new ObservableCollection<Model.Worker>();
+                    while (!reader.EndOfStream)
+                    {
+                        string[] property = reader.ReadLine().Split(',');
+                        _worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                        //Worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                    }
+                    Worker.Clear();
+                    Worker.AddRange(_worker);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Read File Fail: " + e);
+            }
+        }
+        #endregion
         #endregion
         #endregion
 
