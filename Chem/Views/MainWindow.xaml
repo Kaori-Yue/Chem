@@ -34,7 +34,7 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <!-- Theme -->
-            <Controls:Flyout Header="Flyout" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Theme_Flyout" IsOpen="False" DataContext="{DynamicResource Theme}">
+            <Controls:Flyout Theme="Adapt" Header="Theme" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Theme_Flyout" IsOpen="False" DataContext="{DynamicResource Theme}">
                 <Controls:Flyout.Resources>
                     <ViewModels:Theme x:Key="Theme"/>
                 </Controls:Flyout.Resources>
@@ -46,13 +46,32 @@
                 </Grid>
             </Controls:Flyout>
             <!-- Queue -->
-            <Controls:Flyout Header="Flyout" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
+            <Controls:Flyout Theme="Adapt" Header="Queue" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="220,0,20,0">
                         <DataGrid x:Name="queue_datagrid" Width="500" Height="300" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
-                            <DataGrid.Background>
-                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                            </DataGrid.Background>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <!--MouseOver-->
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </MultiTrigger>
+                                        <!--Click-->
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" Value="Red"/>
+                                        </MultiTrigger>
+                                        
+
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Width="65" Header="Pump" Binding="{Binding Pump}" ></DataGridTextColumn>
                                 <DataGridTextColumn Width="75" Header="Value" Binding="{Binding Value}" ></DataGridTextColumn>
@@ -86,7 +105,7 @@
                 </DockPanel>
             </GroupBox>
             <GroupBox Header="Value" Width="200" Margin="0,0,5,0">
-                <TextBox Height="25" Width="150" Text="{Binding Value, Converter={StaticResource Sort}}"/>
+                <TextBox Height="25" Width="150" Text="{Binding Value}"/>
             </GroupBox>
             <GroupBox Header="Volume" Width="200" Margin="0,0,5,0">
                 <TextBox Height="25" Width="150" Text="{Binding Volume}"/>
