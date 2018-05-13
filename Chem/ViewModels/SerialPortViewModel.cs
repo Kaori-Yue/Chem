@@ -245,29 +245,48 @@ namespace Chem.ViewModels
         #region Save
         private void Save(object parameter)
         {
-
+            Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Save a file",
+                DefaultExt = ".csv",
+                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+            };
+            if (save.ShowDialog() == true)
+            {
+                // EDIT HERE
+            }
         }
         #region Load
         private void Load(object parameter)
         {
-            try
+            Microsoft.Win32.OpenFileDialog open = new Microsoft.Win32.OpenFileDialog
             {
-                using (StreamReader reader = new StreamReader("Worker.txt"))
+                Title = "Select a file",
+                DefaultExt = ".csv",
+                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory
+            };
+            if (open.ShowDialog() == true)
+            {
+                try
                 {
-                    ObservableCollection<Model.Worker> _worker = new ObservableCollection<Model.Worker>();
-                    while (!reader.EndOfStream)
+                    using (StreamReader reader = new StreamReader(open.FileName))
                     {
-                        string[] property = reader.ReadLine().Split(',');
-                        _worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
-                        //Worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                        ObservableCollection<Model.Worker> _worker = new ObservableCollection<Model.Worker>();
+                        while (!reader.EndOfStream)
+                        {
+                            string[] property = reader.ReadLine().Split(',');
+                            _worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                            //Worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                        }
+                        Worker.Clear();
+                        Worker.AddRange(_worker);
                     }
-                    Worker.Clear();
-                    Worker.AddRange(_worker);
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Read File Fail: " + e);
+                catch (Exception e)
+                {
+                    Console.WriteLine("Read File Fail: " + e);
+                }
             }
         }
         #endregion

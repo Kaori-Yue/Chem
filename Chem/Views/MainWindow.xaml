@@ -49,7 +49,7 @@
             <Controls:Flyout Theme="Adapt" Header="Queue" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="220,0,20,0">
-                        <DataGrid x:Name="queue_datagrid" Width="500" Height="300" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
+                        <DataGrid x:Name="queue_datagrid" Width="500" Height="300" SelectionMode="Single" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow">
                                     <Style.Triggers>
@@ -67,7 +67,15 @@
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Background" Value="Red"/>
                                         </MultiTrigger>
-                                        
+
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="AlternationIndex" Value="1"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" Value="Gold"/>
+                                        </MultiTrigger>
+
+
 
                                     </Style.Triggers>
                                 </Style>
