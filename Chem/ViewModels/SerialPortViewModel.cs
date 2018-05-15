@@ -160,6 +160,11 @@ namespace Chem.ViewModels
         private void AddQueue(object parameter)
         {
             Worker.Add(new Model.Worker { Pump = Pump, Value = Value, Volume = Volume, Speed = Speed, Wait = Wait });
+            Pump = String.Empty;
+            Value = String.Empty;
+            Volume = String.Empty;
+            Speed = String.Empty;
+            Wait = String.Empty;
         }
 
         #endregion

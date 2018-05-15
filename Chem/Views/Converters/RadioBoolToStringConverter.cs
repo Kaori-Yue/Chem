@@ -14,7 +14,7 @@ namespace Chem.Views.Converters
         {
             string str = (string)value;
             if (String.IsNullOrEmpty(str))
-                return Binding.DoNothing;
+                return false;
             if (str.ToString().Equals(parameter.ToString()))
                 return true;
             else
