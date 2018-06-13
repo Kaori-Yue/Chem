@@ -79,6 +79,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\Converters\DataGridIndexConverter.cs" />
     <Compile Include="Views\Converters\RadioBoolToIntConverter.cs" />
     <Compile Include="Views\Converters\RadioBoolToStringConverter.cs" />
     <Compile Include="Views\Converters\Sort.cs" />

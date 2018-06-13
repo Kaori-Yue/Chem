@@ -10,6 +10,11 @@ namespace Chem.Helper
 {
     class API
     {
+        public API()
+        {
+            port.WriteLine("/1N1R\r");
+        }
+
         private SerialPort port;
         public API(SerialPort port)
         {
@@ -21,13 +26,15 @@ namespace Chem.Helper
         //}
         public void SetZero()
         {
-            port.WriteLine("/1IA3000R\r");
-            //port.WriteLine("/1ZR\r");
+            //port.WriteLine("/1IA24000R\r");
+            port.WriteLine("/1ZR\r");
         }
-        public void SetSyring(string volume, string speed)
+        public void SetSyring(string volume, string speed, string wait)
         {
             port.WriteLine("/1IV" + speed + "A" + volume + "R\r");
-            Thread.Sleep(10000); // <<< CHANGE TIMER
+            int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
+            Console.WriteLine("delay : " +deley);
+            Thread.Sleep(deley); // <<< CHANGE TIMER
 
             //port.WriteLine("/2I5R");
             //port.WriteLine("/1OP6000R");
@@ -40,18 +47,20 @@ namespace Chem.Helper
         //    port.WriteLine("/1OV" + speed + "P" + syring + "R/r");
         //}
 
-        private void Release(string volume, string speed)
+        private void Release(string volume, string speed, string portn)
         {
+            //port.WriteLine("/2O"+ portn +"R\r");
             port.WriteLine("/1OV" + speed + "A" + volume + "R\r");
             // etc
         }
 
-        public void ChangeValve_Release(string portn, string volume, string speed)
+        public void ChangeValve_Release(string portn, string volume, string speed, string wait)
         {
-            port.WriteLine("/2I" + portn + "R\r");
+            port.WriteLine("/2O" + portn + "R\r");
             Thread.Sleep(3000);
-            Release(volume, speed);
-            Thread.Sleep(7000);
+            Release(volume, speed, portn);
+            int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
+            Thread.Sleep(deley);
         }
 
         // release l

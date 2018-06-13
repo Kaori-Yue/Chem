@@ -18,6 +18,7 @@
         <Converters:Sort x:Key="Sort"/>
         <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"></Converters:RadioBoolToIntConverter>
         <Converters:RadioBoolToStringConverter x:Key="RadioBoolToStringConverter"/>
+        <Converters:DataGridIndexConverter x:Key="DataGridIndexConverter"/>
         <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
     </Controls:MetroWindow.Resources>
 
@@ -49,7 +50,7 @@
             <Controls:Flyout Theme="Adapt" Header="Queue" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="220,0,20,0">
-                        <DataGrid x:Name="queue_datagrid" Width="500" Height="300" SelectionMode="Single" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
+                        <DataGrid AlternationCount="1000" x:Name="queue_datagrid" Width="500" Height="300" SelectionMode="Single" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow">
                                     <Style.Triggers>
@@ -68,12 +69,13 @@
                                             <Setter Property="Background" Value="Red"/>
                                         </MultiTrigger>
 
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="AlternationIndex" Value="1"/>
-                                            </MultiTrigger.Conditions>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <!--<Condition  Value="1"/>-->
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Converter={StaticResource DataGridIndexConverter}}" Value="0"/>
+                                            </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" Value="Gold"/>
-                                        </MultiTrigger>
+                                        </MultiDataTrigger>
 
 
 

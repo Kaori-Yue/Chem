@@ -44,7 +44,7 @@ namespace Chem.ViewModels
             //Worker = new List<Model.Worker>();
             try
             {
-                port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
+                port = new SerialPort("COM9", 9600, Parity.None, 8, StopBits.One);
                 port.Open();
                 port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
                 api = new API(port);
@@ -185,8 +185,15 @@ namespace Chem.ViewModels
             {
                 foreach (Model.Worker worker in Worker)
                 {
-                    Console.WriteLine("PUMP: " + worker.Pump);
-                    Thread.Sleep(5000);
+                    if (worker.Pump == "L")
+                    {
+                        Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
+                        api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                    } else
+                    {
+                        api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                        //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
+                    }
                 }
 
             }
