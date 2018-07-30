@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Management;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -179,7 +180,7 @@ namespace Chem.ViewModels
 
         private void RunMe() {
             int cycle = Int32.Parse(Cycle);
-            int water = 0;
+            //int water = 0;
             Console.WriteLine(cycle);
             Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
@@ -266,6 +267,15 @@ namespace Chem.ViewModels
             };
             if (save.ShowDialog() == true)
             {
+                Model.JsonFormat jsonFormat = new Model.JsonFormat
+                {
+                    Worker = Worker,
+                    Loop = Cycle
+                };
+                String json = JsonConvert.SerializeObject(jsonFormat, Formatting.Indented);
+                System.IO.File.WriteAllText(save.FileName, json.ToString());
+                Console.WriteLine(json);
+                /*
                 StringBuilder sb = new StringBuilder();
                 StringWriter sw = new StringWriter(sb);
                 using (JsonWriter writer = new JsonTextWriter(sw))
@@ -311,12 +321,58 @@ namespace Chem.ViewModels
                 }
                 //Console.WriteLine(sb.ToString());
                 System.IO.File.WriteAllText(save.FileName, sb.ToString());
+                */
             }
         }
         #endregion
         #region Load
         private void Load(object parameter)
         {
+
+            /*
+            using (var searcher = new ManagementObjectSearcher ("SELECT * FROM WIN32_SerialPort"))
+            {
+                string[] portnames = SerialPort.GetPortNames();
+                var ports = searcher.Get().Cast<ManagementBaseObject>().ToList();
+                var tList = (from n in portnames
+                             join p in ports on n equals p["DeviceID"].ToString()
+                             select n + " - " + p["Caption"]).ToList();
+
+                tList.ForEach(Console.WriteLine);
+            }
+
+
+            */
+
+
+            // https://docs.microsoft.com/en-us/windows/desktop/cimwin32prov/win32-serialport
+            ManagementClass processClass = new ManagementClass("Win32_SerialPort"); // Win32_PnPEntity
+
+
+            ManagementObjectCollection Ports = processClass.GetInstances();
+            string device = "No recognized";
+            foreach (ManagementObject property in Ports)
+            {
+                if (property.GetPropertyValue("Name") != null)
+                    //if (property.GetPropertyValue("Name").ToString().Contains("COM"))
+                    //{
+                    Console.WriteLine(property.GetPropertyValue("DeviceID"));
+                Console.WriteLine(property.GetPropertyValue("Name").ToString());
+                device = property.GetPropertyValue("Name").ToString();
+                    //}
+            }
+
+
+
+
+
+            //string[] ports = SerialPort.GetPortNames();
+            //foreach (string port in ports)
+            //{
+            //    Console.WriteLine(port);
+            //}
+
+            //
             Microsoft.Win32.OpenFileDialog open = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Select a file",
@@ -326,6 +382,11 @@ namespace Chem.ViewModels
             };
             if (open.ShowDialog() == true)
             {
+                Model.JsonFormat jsonFormat = JsonConvert.DeserializeObject<Model.JsonFormat>(System.IO.File.ReadAllText(open.FileName));
+                //Console.WriteLine(jsonFormat.Loop);
+                Worker.AddRange(jsonFormat.Worker);
+                Cycle = jsonFormat.Loop;
+                /*
                 try
                 {
                     using (StreamReader reader = new StreamReader(open.FileName))
@@ -351,6 +412,7 @@ namespace Chem.ViewModels
                 {
                     Console.WriteLine("Read File Fail: " + e);
                 }
+                */
             }
         }
         #endregion
