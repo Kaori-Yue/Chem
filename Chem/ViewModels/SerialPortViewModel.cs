@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Chem.Helper;
+using Newtonsoft.Json;
 
 namespace Chem.ViewModels
 {
@@ -265,9 +266,54 @@ namespace Chem.ViewModels
             };
             if (save.ShowDialog() == true)
             {
-                // EDIT HERE
+                StringBuilder sb = new StringBuilder();
+                StringWriter sw = new StringWriter(sb);
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    writer.Formatting = Formatting.Indented;
+                    writer.WriteStartObject();
+                    writer.WritePropertyName("data");
+                    writer.WriteStartArray();
+
+                    //Worker.ToList().foreach (var item in collection)
+                    //{
+
+                    //}
+                    Worker.ToList().ForEach(worker =>
+                    {
+                        writer.WriteStartObject();
+
+                        writer.WritePropertyName("Pump");
+                        writer.WriteValue(worker.Pump);
+
+                        writer.WritePropertyName("Value");
+                        writer.WriteValue(worker.Value);
+
+                        writer.WritePropertyName("Volume");
+                        writer.WriteValue(worker.Volume);
+
+                        writer.WritePropertyName("Speed");
+                        writer.WriteValue(worker.Speed);
+
+                        writer.WritePropertyName("Wait");
+                        writer.WriteValue(worker.Wait);
+
+                        writer.WriteEndObject();
+                    });
+
+                    writer.WriteEndArray();
+
+                    writer.WritePropertyName("Loop");
+                    writer.WriteValue(Cycle);
+
+                    writer.WriteEndObject();
+
+                }
+                //Console.WriteLine(sb.ToString());
+                System.IO.File.WriteAllText(save.FileName, sb.ToString());
             }
         }
+        #endregion
         #region Load
         private void Load(object parameter)
         {
@@ -289,19 +335,24 @@ namespace Chem.ViewModels
                         {
                             string[] property = reader.ReadLine().Split(',');
                             _worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
+                            if (String.IsNullOrEmpty(property[5]))
+                                Console.WriteLine("loop: " + property[5]);
                             //Worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
                         }
                         Worker.Clear();
                         Worker.AddRange(_worker);
                     }
                 }
+                catch (IndexOutOfRangeException e)
+                {
+                    Console.WriteLine("IndexOutOfRangeException");
+                } 
                 catch (Exception e)
                 {
                     Console.WriteLine("Read File Fail: " + e);
                 }
             }
         }
-        #endregion
         #endregion
         #endregion
 
