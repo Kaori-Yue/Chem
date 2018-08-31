@@ -46,7 +46,7 @@ namespace Chem.ViewModels
             //Worker = new List<Model.Worker>();
             try
             {
-                port = new SerialPort("COM9", 9600, Parity.None, 8, StopBits.One);
+                port = new SerialPort("COM5", 9600, Parity.None, 8, StopBits.One);
                 port.Open();
                 port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
                 api = new API(port);
@@ -185,17 +185,37 @@ namespace Chem.ViewModels
             Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
             {
-                foreach (Model.Worker worker in Worker)
+                for (int j = 0; j < Worker.Count; j++)
                 {
-                    if (worker.Pump == "L")
+                    Model.Worker worker = Worker[j];
+                    string oldVolume = "null";
+                    if (j == 0)
                     {
-                        Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
-                        api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                        if (worker.Pump == "L")
+                        {
+                            Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
+                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, true , "null");
+                        }
+                        else
+                        {
+                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                            //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
+                        }
                     } else
                     {
-                        api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
-                        //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
+                        if (worker.Pump == "L")
+                        {
+                            Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
+                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, false, oldVolume);
+                        }
+                        else
+                        {
+                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                            //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
+                        }
                     }
+
+                    oldVolume = worker.Volume;
                 }
 
             }
@@ -262,8 +282,8 @@ namespace Chem.ViewModels
             Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog
             {
                 Title = "Save a file",
-                DefaultExt = ".csv",
-                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                DefaultExt = ".json",
+                Filter = "JSON Files (*.csv)|*.JSON|All Files (*.*)|*.*",
             };
             if (save.ShowDialog() == true)
             {
@@ -376,8 +396,8 @@ namespace Chem.ViewModels
             Microsoft.Win32.OpenFileDialog open = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Select a file",
-                DefaultExt = ".csv",
-                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                DefaultExt = ".json",
+                Filter = "JSON Files (*.JSON)|*.JSON|All Files (*.*)|*.*",
                 InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory
             };
             if (open.ShowDialog() == true)
