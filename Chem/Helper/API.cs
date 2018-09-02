@@ -10,12 +10,6 @@ namespace Chem.Helper
 {
     class API
     {
-        //public API()
-        //{
-        //    //port.WriteLine("/1N1R\r");
-        //}
-
-
         private SerialPort port;
         public API(SerialPort port)
         {
@@ -40,11 +34,11 @@ namespace Chem.Helper
             //port.WriteLine("/1ZR\r");
             //port.WriteLine("/1k0R\r");
         }
-        public void SetSyring(string volume, string speed, string wait, bool FirstTime, string oldVolume)
+        public void SetSyring(string volume, string speed, string wait, string oldVolume = null)
         {
             port.WriteLine("/1IV" + speed + "A" + volume + "R\r");
 
-            if (FirstTime == true)
+            if (oldVolume == null)
             {
                 Console.WriteLine("null");
                 int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;

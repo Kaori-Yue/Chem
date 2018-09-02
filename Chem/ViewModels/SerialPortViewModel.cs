@@ -185,16 +185,16 @@ namespace Chem.ViewModels
             Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
             {
+                string oldVolume = "0"; // default value
                 for (int j = 0; j < Worker.Count; j++)
                 {
                     Model.Worker worker = Worker[j];
-                    string oldVolume = "null";
                     if (j == 0)
                     {
                         if (worker.Pump == "L")
                         {
                             Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
-                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, true , "null");
+                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
                         }
                         else
                         {
@@ -206,7 +206,7 @@ namespace Chem.ViewModels
                         if (worker.Pump == "L")
                         {
                             Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
-                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, false, oldVolume);
+                            api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, oldVolume);
                         }
                         else
                         {
@@ -283,7 +283,7 @@ namespace Chem.ViewModels
             {
                 Title = "Save a file",
                 DefaultExt = ".json",
-                Filter = "JSON Files (*.csv)|*.JSON|All Files (*.*)|*.*",
+                Filter = "JSON (*.json)|*.JSON|All Files (*.*)|*.*",    
             };
             if (save.ShowDialog() == true)
             {
@@ -295,53 +295,6 @@ namespace Chem.ViewModels
                 String json = JsonConvert.SerializeObject(jsonFormat, Formatting.Indented);
                 System.IO.File.WriteAllText(save.FileName, json.ToString());
                 Console.WriteLine(json);
-                /*
-                StringBuilder sb = new StringBuilder();
-                StringWriter sw = new StringWriter(sb);
-                using (JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("data");
-                    writer.WriteStartArray();
-
-                    //Worker.ToList().foreach (var item in collection)
-                    //{
-
-                    //}
-                    Worker.ToList().ForEach(worker =>
-                    {
-                        writer.WriteStartObject();
-
-                        writer.WritePropertyName("Pump");
-                        writer.WriteValue(worker.Pump);
-
-                        writer.WritePropertyName("Value");
-                        writer.WriteValue(worker.Value);
-
-                        writer.WritePropertyName("Volume");
-                        writer.WriteValue(worker.Volume);
-
-                        writer.WritePropertyName("Speed");
-                        writer.WriteValue(worker.Speed);
-
-                        writer.WritePropertyName("Wait");
-                        writer.WriteValue(worker.Wait);
-
-                        writer.WriteEndObject();
-                    });
-
-                    writer.WriteEndArray();
-
-                    writer.WritePropertyName("Loop");
-                    writer.WriteValue(Cycle);
-
-                    writer.WriteEndObject();
-
-                }
-                //Console.WriteLine(sb.ToString());
-                System.IO.File.WriteAllText(save.FileName, sb.ToString());
-                */
             }
         }
         #endregion
@@ -397,7 +350,7 @@ namespace Chem.ViewModels
             {
                 Title = "Select a file",
                 DefaultExt = ".json",
-                Filter = "JSON Files (*.JSON)|*.JSON|All Files (*.*)|*.*",
+                Filter = "JSON (*.JSON)|*.JSON|All Files (*.*)|*.*",
                 InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory
             };
             if (open.ShowDialog() == true)
@@ -406,33 +359,6 @@ namespace Chem.ViewModels
                 //Console.WriteLine(jsonFormat.Loop);
                 Worker.AddRange(jsonFormat.Worker);
                 Cycle = jsonFormat.Loop;
-                /*
-                try
-                {
-                    using (StreamReader reader = new StreamReader(open.FileName))
-                    {
-                        ObservableCollection<Model.Worker> _worker = new ObservableCollection<Model.Worker>();
-                        while (!reader.EndOfStream)
-                        {
-                            string[] property = reader.ReadLine().Split(',');
-                            _worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
-                            if (String.IsNullOrEmpty(property[5]))
-                                Console.WriteLine("loop: " + property[5]);
-                            //Worker.Add(new Model.Worker { Pump = property[0], Value = property[1], Volume = property[2], Speed = property[3], Wait = property[4] });
-                        }
-                        Worker.Clear();
-                        Worker.AddRange(_worker);
-                    }
-                }
-                catch (IndexOutOfRangeException e)
-                {
-                    Console.WriteLine("IndexOutOfRangeException");
-                } 
-                catch (Exception e)
-                {
-                    Console.WriteLine("Read File Fail: " + e);
-                }
-                */
             }
         }
         #endregion
