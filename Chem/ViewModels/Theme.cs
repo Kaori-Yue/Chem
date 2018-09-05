@@ -17,7 +17,7 @@ namespace Chem.ViewModels
     public class Theme : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public ObservableCollection<Model.Theme> ThemeConfig { get; set; }
+        //public ObservableCollection<Model.Theme> ThemeConfig { get; set; }
         private Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
         public Theme()
         {
@@ -99,5 +99,6 @@ namespace Chem.ViewModels
             "BaseDark"
         });
         #endregion
+
     }
 }

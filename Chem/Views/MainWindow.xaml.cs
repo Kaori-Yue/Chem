@@ -27,6 +27,7 @@ namespace Chem.Views
         {
             //DataContext = new Theme();
             InitializeComponent();
+            this.DataContext = this;
             //this.DataContext = new Theme();
             //DataContext = new ViewModel.Wrapper();
 
@@ -34,5 +35,6 @@ namespace Chem.Views
             //theme.comboboxAccentSelected
 
         }
+
     }
 }

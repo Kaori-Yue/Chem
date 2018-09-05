@@ -1,4 +1,5 @@
-﻿<Controls:MetroWindow
+﻿<Controls:MetroWindow 
+        xmlns:UserControl="clr-namespace:Chem.UserControl" 
 		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,13 +21,14 @@
         <Converters:RadioBoolToStringConverter x:Key="RadioBoolToStringConverter"/>
         <Converters:DataGridIndexConverter x:Key="DataGridIndexConverter"/>
         <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
+        <ViewModels:Theme x:Key="Theme"></ViewModels:Theme>
     </Controls:MetroWindow.Resources>
 
 
     <!-- Righet top menu -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <ToggleButton Content="Queue" IsChecked="{Binding IsOpen, ElementName=Queue_Flyout}"/>
+            <ToggleButton Content="Queue" IsChecked="{Binding Path=IsOpen, ElementName=Queue_Flyout}"/>
             <ToggleButton Content="Theme" IsChecked="{Binding IsOpen, ElementName=Theme_Flyout}"/>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -35,6 +37,7 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <!-- Theme -->
+            <!-- 
             <Controls:Flyout Theme="Adapt" Header="Theme" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Theme_Flyout" IsOpen="False" DataContext="{DynamicResource Theme}">
                 <Controls:Flyout.Resources>
                     <ViewModels:Theme x:Key="Theme"/>
@@ -46,64 +49,10 @@
                     </WrapPanel>
                 </Grid>
             </Controls:Flyout>
-            <!-- Queue -->
-            <Controls:Flyout Theme="Adapt" Header="Queue" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Queue_Flyout" IsOpen="True" DataContext="{DynamicResource SerialPortViewModel}">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Margin="220,0,20,0">
-                        <DataGrid AlternationCount="1000" x:Name="queue_datagrid" Width="500" Height="300" SelectionMode="Single" ItemsSource="{Binding Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
-                            <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
-                                    <Style.Triggers>
-                                        <!--MouseOver-->
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsMouseOver" Value="True"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Background" Value="Green"/>
-                                        </MultiTrigger>
-                                        <!--Click-->
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="True"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Background" Value="Red"/>
-                                        </MultiTrigger>
-
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <!--<Condition  Value="1"/>-->
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Converter={StaticResource DataGridIndexConverter}}" Value="0"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="Gold"/>
-                                        </MultiDataTrigger>
-
-
-
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.RowStyle>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Width="65" Header="Pump" Binding="{Binding Pump}" ></DataGridTextColumn>
-                                <DataGridTextColumn Width="75" Header="Value" Binding="{Binding Value}" ></DataGridTextColumn>
-                                <DataGridTextColumn Width="120" Header="Volume" Binding="{Binding Volume}" ></DataGridTextColumn>
-                                <DataGridTextColumn Width="120" Header="Speed" Binding="{Binding Speed}" ></DataGridTextColumn>
-                                <DataGridTextColumn Width="120" Header="Wait" Binding="{Binding Wait}" ></DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
-                    <WrapPanel VerticalAlignment="Top" Margin="0,100,0,0">
-                        <StackPanel>
-                            <Button Width="100" Height="30" Content="Up" Command="{Binding UpCommand}" CommandParameter="{Binding ElementName=queue_datagrid, Path=SelectedIndex}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                            <Button Width="100" Height="30" Content="Down" Command="{Binding DownCommand}" CommandParameter="{Binding ElementName=queue_datagrid, Path=SelectedIndex}"/>
-                        </StackPanel>
-                        <StackPanel Margin="20,0,0,0">
-                            <Button Width="100" Height="30" Content="Save" Command="{Binding SaveCommand}"/>
-                            <Button Width="100" Height="30" Content="Load" Command="{Binding LoadCommand}"/>
-                        </StackPanel>
-                    </WrapPanel>
-                </StackPanel>
-            </Controls:Flyout>
+            -->
+            <UserControl:Theme Header="TEST" x:Name="Theme_Flyout" DataContext="{DynamicResource Theme}" Width="{Binding ElementName=metroWindow, Path=Width}"/>
         </Controls:FlyoutsControl>
+
     </Controls:MetroWindow.Flyouts>
 
     <Grid x:Name="grid" DataContext="{DynamicResource SerialPortViewModel}">
