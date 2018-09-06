@@ -13,19 +13,11 @@
 		mc:Ignorable="d"
         TitleCaps="False"
 		Title="Chem" Height="400" Width="1100" ResizeMode="CanMinimize"
-
     >
+    <Controls:MetroWindow.DataContext>
+        <ViewModels:Wrapper />
+    </Controls:MetroWindow.DataContext>
 
-
-    <Controls:MetroWindow.Resources>
-        <Converters:Sort x:Key="Sort"/>
-        <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"></Converters:RadioBoolToIntConverter>
-        <Converters:RadioBoolToStringConverter x:Key="RadioBoolToStringConverter"/>
-        <Converters:DataGridIndexConverter x:Key="DataGridIndexConverter"/>
-        <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
-        <ViewModels:Config x:Key="Config"></ViewModels:Config>
-        <ViewModels:Wrapper x:Key="Wrapper"></ViewModels:Wrapper>
-    </Controls:MetroWindow.Resources>
 
     <!-- Righet top menu -->
     <Controls:MetroWindow.RightWindowCommands>
@@ -38,21 +30,18 @@
     <!-- Flyout Controls -->
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <UserControl:Config Header="Config" x:Name="Theme_Flyout" Width="{Binding ElementName=metroWindow, Path=Width}" TEXT="1234">
-                <UserControl:Config.DataContext>
-                    <ViewModels:Wrapper />
-                </UserControl:Config.DataContext>
+            <UserControl:Config Header="Configs" tmp="125" x:Name="Theme_Flyout" Width="{Binding ElementName=metroWindow, Path=Width}" DataContext="{Binding}">
             </UserControl:Config>
         </Controls:FlyoutsControl>
 
     </Controls:MetroWindow.Flyouts>
 
-    <Grid x:Name="grid" DataContext="{DynamicResource SerialPortViewModel}">
+    <Grid x:Name="grid">
         <StackPanel Orientation="Horizontal" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
             <GroupBox Header="Pump" Width="190" Margin="0,0,5,0">
                 <DockPanel>
-                    <RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0" IsChecked="{Binding Pump, ConverterParameter='L', Converter={StaticResource RadioBoolToStringConverter}}" />
-                    <RadioButton x:Name="PumpR" GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right" IsChecked="{Binding Pump, ConverterParameter='R', Converter={StaticResource RadioBoolToStringConverter}}"/>
+                    <!--<RadioButton GroupName="direction" Content="L" Width="50" Height="50" HorizontalAlignment="Left" Margin="15,0,0,0" IsChecked="{Binding Pump, ConverterParameter='L', Converter={StaticResource RadioBoolToStringConverter}}" />-->
+                    <!--<RadioButton x:Name="PumpR" GroupName="direction" Content="R" Width="50" Height="50" HorizontalAlignment="Right" IsChecked="{Binding Pump, ConverterParameter='R', Converter={StaticResource RadioBoolToStringConverter}}"/>-->
                 </DockPanel>
             </GroupBox>
             <GroupBox Header="Value" Width="200" Margin="0,0,5,0">
@@ -65,7 +54,7 @@
                 <TextBox Height="25" Width="150" Text="{Binding Speed}"/>
             </GroupBox>
             <GroupBox Header="Wait (Delay)" Width="200" Margin="0,0,5,0">
-                <TextBox Height="25" Width="150" Text="{Binding Wait}"/>
+                <TextBox Height="25" Width="150" Text="{Binding SerialPort.Wait}"/>
             </GroupBox>
         </StackPanel>
         <WrapPanel Width="200" Height="100" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

@@ -23,7 +23,6 @@ namespace Chem.ViewModels
         public Config()
         {
             #region Bind Button Event
-            ConnectCommand = new RelayCommand(Connect);
             #endregion
             Console.WriteLine("Cons: Config");
             //SaveCommand = new RelayCommand(Save);
@@ -107,12 +106,6 @@ namespace Chem.ViewModels
         //////////////////////////////////////////////////////////////////////////////////
         // Serial Port
 
-        public RelayCommand ConnectCommand { get; set; }
-        private void Connect(object parameters)
-        {
-
-        }
-
 
 
         private string _SerialPortSelected;
@@ -126,7 +119,6 @@ namespace Chem.ViewModels
             {
                 _SerialPortSelected = value;
                 OnPropertyChanged();
-                Console.WriteLine(value);
             }
         }
         public List<KeyValuePair<string, string>> SerialPort { get => ListSerialPort(); }

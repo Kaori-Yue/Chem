@@ -28,6 +28,10 @@ namespace Chem.Views
         {
             //DataContext = new Theme();
             InitializeComponent();
+            //this.DataContext = new
+            //{
+            //    Config = new Config()
+            //};
             //this.DataContext = this;
             //this.DataContext = new Theme();
             //DataContext = new ViewModel.Wrapper();

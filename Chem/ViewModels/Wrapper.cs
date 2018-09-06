@@ -12,7 +12,8 @@ namespace Chem.ViewModels
         public SerialPortViewModel SerialPort { get; set; }
         public Wrapper ()
         {
-
+            Config = new Config();
+            SerialPort = new SerialPortViewModel();
         }
     }
 }

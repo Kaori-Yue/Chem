@@ -37,6 +37,7 @@ namespace Chem.ViewModels
             DownCommand = new RelayCommand(Down);
             SaveCommand = new RelayCommand(Save);
             LoadCommand = new RelayCommand(Load);
+            ConnectCommand = new RelayCommand(Connect);
             #endregion
             Console.WriteLine("Cons: SerialPortViewModel");
 
@@ -57,7 +58,6 @@ namespace Chem.ViewModels
                 Console.WriteLine("Can't Connect SerialPort: " + e);
             }
         }
-
 
 
         /*
@@ -153,6 +153,7 @@ namespace Chem.ViewModels
         public RelayCommand DownCommand { get; set; }
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand LoadCommand { get; set; }
+        public RelayCommand ConnectCommand { get; set; }
         //public RelayCommand ChangeAccentCommand { get; set; }
         #endregion
 
@@ -394,6 +395,14 @@ namespace Chem.ViewModels
                 Worker.AddRange(jsonFormat.Worker);
                 Cycle = jsonFormat.Loop;
             }
+        }
+        #endregion
+        #region Connect
+        private void Connect(object parameters)
+        {
+            
+            
+            Console.WriteLine(parameters);
         }
         #endregion
         #endregion

@@ -12,21 +12,22 @@
     Width="{Binding Width}"
     IsOpen="True"
     Header="{Binding Header}"
+                 d:DataContext="{d:DesignInstance ViewModels:Wrapper}"
     >
 
     <Grid>
         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,50">
             <GroupBox Header="Theme" Width="400" Height="200">
                 <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxAccent}" SelectedItem="{Binding ComboboxAccentSelected}" Margin="0,0,0,10"/>
-                    <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxBase}" SelectedItem="{Binding ComboboxBaseSelected}"/>
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding Config.ComboboxAccent}" SelectedItem="{Binding Config.ComboboxAccentSelected}" Margin="0,0,0,10"/>
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding Config.ComboboxBase}" SelectedItem="{Binding Config.ComboboxBaseSelected}"/>
                 </WrapPanel>
             </GroupBox>
             <GroupBox Header="Serial Port" Width="580" Margin="20,0,0,0">
                 <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-                    <ComboBox Width="300" Height="60" ItemsSource="{Binding SerialPort}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding SerialPortSelected}"/>
-                    <Button Margin="0,10,0,0">Connect</Button>
-                    <TextBox Text="{Binding ElementName=config, Path=TEXT}"></TextBox>
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding Config.SerialPort}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Config.SerialPortSelected}"/>
+                    <Button Margin="0,10,0,0" Command="{Binding SerialPort.ConnectCommand}" CommandParameter="{Binding Config.SerialPortSelected}">Connect</Button>
+                    <TextBox Text="{Binding SerialPortSelected}"></TextBox>
                 </WrapPanel>
             </GroupBox>
         </WrapPanel>

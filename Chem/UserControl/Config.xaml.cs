@@ -21,10 +21,10 @@ namespace Chem.UserControl
     /// <summary>
     /// Interaction logic for Config.xaml
     /// </summary>
-    public partial class Config : INotifyPropertyChanged
+    public partial class Config //: INotifyPropertyChanged
     {
         //public string Header { get; set; }
-        public string TEXT { get; set; }
+        public string tmp { get; set; }
         //public bool IsOpen { get; set; }
 
         //public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(Config), new PropertyMetadata(null));
@@ -35,7 +35,7 @@ namespace Chem.UserControl
             //this.DataContext = this;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
 
     }
