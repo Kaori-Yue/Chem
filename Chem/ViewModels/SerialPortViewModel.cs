@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Chem.Helper;
 using Newtonsoft.Json;
 
@@ -115,7 +116,7 @@ namespace Chem.ViewModels
             set { _Speed = value; OnPropertyChanged(); }
         }
 
-        private string _Wait;
+        private string _Wait = "0";
         public string Wait
         {
             get { return _Wait; }
@@ -161,12 +162,40 @@ namespace Chem.ViewModels
         //private void AddQueue(object parameter) => Console.WriteLine("Delay: " + Wait + " | Speed: " + Speed);
         private void AddQueue(object parameter)
         {
+            string check = checkValue();
+            if (!check.Equals("PASSED"))
+            {
+                MessageBox.Show(check);
+                return;
+            }
+
             Worker.Add(new Model.Worker { Pump = Pump, Value = Value, Volume = Volume, Speed = Speed, Wait = Wait });
             Pump = String.Empty;
             Value = String.Empty;
             Volume = String.Empty;
             Speed = String.Empty;
             Wait = String.Empty;
+        }
+
+        private string checkValue()
+        {
+            if (string.IsNullOrWhiteSpace(Pump))
+                return "Pump";
+
+            if (Pump == "R")
+                if (string.IsNullOrWhiteSpace(Value))
+                    return "if PUMP R  VALUE can't null";
+
+            if (string.IsNullOrWhiteSpace(Volume))
+                return "Volume";
+
+            if (string.IsNullOrWhiteSpace(Speed))
+                return "Speed";
+
+            if (string.IsNullOrWhiteSpace(Wait))
+                return "Wait";
+
+            return "PASSED";
         }
 
         #endregion
