@@ -8,12 +8,11 @@ namespace Chem.ViewModels
 {
     public class Wrapper
     {
-        public Theme Theme { get; set; }
-
-
-        public Wrapper()
+        public Config Config { get; set; }
+        public SerialPortViewModel SerialPort { get; set; }
+        public Wrapper ()
         {
-            Theme = new Theme();
+
         }
     }
 }

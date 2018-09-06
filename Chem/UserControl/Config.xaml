@@ -1,0 +1,36 @@
+﻿<Controls:Flyout x:Name="config"
+    x:Class="Chem.UserControl.Config"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Chem.UserControl"
+    xmlns:ViewModels="clr-namespace:Chem.ViewModels"
+    mc:Ignorable="d" 
+    d:DesignHeight="400" d:DesignWidth="1100"
+    Width="{Binding Width}"
+    IsOpen="True"
+    Header="{Binding Header}"
+    >
+
+    <Grid>
+        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,50">
+            <GroupBox Header="Theme" Width="400" Height="200">
+                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxAccent}" SelectedItem="{Binding ComboboxAccentSelected}" Margin="0,0,0,10"/>
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxBase}" SelectedItem="{Binding ComboboxBaseSelected}"/>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Serial Port" Width="580" Margin="20,0,0,0">
+                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                    <ComboBox Width="300" Height="60" ItemsSource="{Binding SerialPort}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding SerialPortSelected}"/>
+                    <Button Margin="0,10,0,0">Connect</Button>
+                    <TextBox Text="{Binding ElementName=config, Path=TEXT}"></TextBox>
+                </WrapPanel>
+            </GroupBox>
+        </WrapPanel>
+    </Grid>
+
+
+</Controls:Flyout>

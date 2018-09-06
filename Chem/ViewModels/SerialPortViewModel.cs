@@ -50,6 +50,7 @@ namespace Chem.ViewModels
                 port = new SerialPort("COM5", 9600, Parity.None, 8, StopBits.One);
                 port.Open();
                 port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+                Console.WriteLine("Connect SerialPort Success");
                 api = new API(port);
             } catch (Exception e)
             {
@@ -57,6 +58,9 @@ namespace Chem.ViewModels
             }
         }
 
+
+
+        /*
         private void SerialPortProgram(string args)
         {
             Console.WriteLine("Incoming Data:");
@@ -87,6 +91,7 @@ namespace Chem.ViewModels
             }
 
         }
+        */
 
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -346,7 +351,7 @@ namespace Chem.ViewModels
 
             */
 
-
+            /*
             // https://docs.microsoft.com/en-us/windows/desktop/cimwin32prov/win32-serialport
             ManagementClass processClass = new ManagementClass("Win32_SerialPort"); // Win32_PnPEntity
 
@@ -363,7 +368,7 @@ namespace Chem.ViewModels
                 device = property.GetPropertyValue("Name").ToString();
                     //}
             }
-
+            */
 
 
 

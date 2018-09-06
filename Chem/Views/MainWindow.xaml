@@ -12,7 +12,9 @@
 		x:Class="Chem.Views.MainWindow"
 		mc:Ignorable="d"
         TitleCaps="False"
-		Title="Chem" Height="400" Width="1100" ResizeMode="CanMinimize">
+		Title="Chem" Height="400" Width="1100" ResizeMode="CanMinimize"
+
+    >
 
 
     <Controls:MetroWindow.Resources>
@@ -21,9 +23,9 @@
         <Converters:RadioBoolToStringConverter x:Key="RadioBoolToStringConverter"/>
         <Converters:DataGridIndexConverter x:Key="DataGridIndexConverter"/>
         <ViewModels:SerialPortViewModel x:Key="SerialPortViewModel"/>
-        <ViewModels:Theme x:Key="Theme"></ViewModels:Theme>
+        <ViewModels:Config x:Key="Config"></ViewModels:Config>
+        <ViewModels:Wrapper x:Key="Wrapper"></ViewModels:Wrapper>
     </Controls:MetroWindow.Resources>
-
 
     <!-- Righet top menu -->
     <Controls:MetroWindow.RightWindowCommands>
@@ -36,21 +38,11 @@
     <!-- Flyout Controls -->
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <!-- Theme -->
-            <!-- 
-            <Controls:Flyout Theme="Adapt" Header="Theme" Position="Right" Width="{Binding Width, ElementName=metroWindow}" x:Name="Theme_Flyout" IsOpen="False" DataContext="{DynamicResource Theme}">
-                <Controls:Flyout.Resources>
-                    <ViewModels:Theme x:Key="Theme"/>
-                </Controls:Flyout.Resources>
-                <Grid>
-                    <WrapPanel>
-                        <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxAccent}" SelectedItem="{Binding ComboboxAccentSelected}"/>
-                        <ComboBox Width="300" Height="60" ItemsSource="{Binding ComboboxBase}" SelectedItem="{Binding ComboboxBaseSelected}"/>
-                    </WrapPanel>
-                </Grid>
-            </Controls:Flyout>
-            -->
-            <UserControl:Theme Header="TEST" x:Name="Theme_Flyout" DataContext="{DynamicResource Theme}" Width="{Binding ElementName=metroWindow, Path=Width}"/>
+            <UserControl:Config Header="Config" x:Name="Theme_Flyout" Width="{Binding ElementName=metroWindow, Path=Width}" TEXT="1234">
+                <UserControl:Config.DataContext>
+                    <ViewModels:Wrapper />
+                </UserControl:Config.DataContext>
+            </UserControl:Config>
         </Controls:FlyoutsControl>
 
     </Controls:MetroWindow.Flyouts>

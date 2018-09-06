@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using Chem.ViewModels;
 
 namespace Chem.Views
 {
@@ -27,12 +28,14 @@ namespace Chem.Views
         {
             //DataContext = new Theme();
             InitializeComponent();
-            this.DataContext = this;
+            //this.DataContext = this;
             //this.DataContext = new Theme();
             //DataContext = new ViewModel.Wrapper();
 
             //Theme theme = new Theme();
             //theme.comboboxAccentSelected
+
+
 
         }
 

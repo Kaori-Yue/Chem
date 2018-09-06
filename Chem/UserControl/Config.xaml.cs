@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,20 +19,24 @@ using MahApps.Metro.Controls;
 namespace Chem.UserControl
 {
     /// <summary>
-    /// Interaction logic for Theme.xaml
+    /// Interaction logic for Config.xaml
     /// </summary>
-    public partial class Theme
+    public partial class Config : INotifyPropertyChanged
     {
         //public string Header { get; set; }
-        //public string Text { get; set; }
+        public string TEXT { get; set; }
         //public bool IsOpen { get; set; }
 
-        //public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(Theme), new PropertyMetadata(null));
+        //public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(Config), new PropertyMetadata(null));
 
-        public Theme()
+        public Config()
         {
             InitializeComponent();
             //this.DataContext = this;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
     }
 }

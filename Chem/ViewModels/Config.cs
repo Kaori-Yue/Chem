@@ -11,17 +11,21 @@ using Chem.Helper;
 using Chem.Model;
 using System.Collections.ObjectModel;
 using System.IO.Ports;
+using System.Management;
 
 namespace Chem.ViewModels
 {
-    public class Theme : INotifyPropertyChanged
+    public class Config : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         //public ObservableCollection<Model.Theme> ThemeConfig { get; set; }
         private Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
-        public Theme()
+        public Config()
         {
-            Console.WriteLine("Cons: Theme");
+            #region Bind Button Event
+            ConnectCommand = new RelayCommand(Connect);
+            #endregion
+            Console.WriteLine("Cons: Config");
             //SaveCommand = new RelayCommand(Save);
             /*
             ThemeConfig = new ObservableCollection<Model.Theme>
@@ -100,5 +104,57 @@ namespace Chem.ViewModels
         });
         #endregion
 
+        //////////////////////////////////////////////////////////////////////////////////
+        // Serial Port
+
+        public RelayCommand ConnectCommand { get; set; }
+        private void Connect(object parameters)
+        {
+
+        }
+
+
+
+        private string _SerialPortSelected;
+        public string SerialPortSelected
+        {
+            get
+            {
+                return _SerialPortSelected;
+            }
+            set
+            {
+                _SerialPortSelected = value;
+                OnPropertyChanged();
+                Console.WriteLine(value);
+            }
+        }
+        public List<KeyValuePair<string, string>> SerialPort { get => ListSerialPort(); }
+
+        private List<KeyValuePair<string, string>> ListSerialPort()
+        {
+            // https://docs.microsoft.com/en-us/windows/desktop/cimwin32prov/win32-serialport
+            ManagementClass processClass = new ManagementClass("Win32_SerialPort"); // Win32_PnPEntity
+
+
+            var list = new List<KeyValuePair<string, string>>();
+
+            ManagementObjectCollection Ports = processClass.GetInstances();
+            foreach (ManagementObject property in Ports)
+            {
+                if (property.GetPropertyValue("Name") != null)
+                {
+                    //if (property.GetPropertyValue("Name").ToString().Contains("COM"))
+                    //{
+                    var DeviceID = property.GetPropertyValue("DeviceID").ToString();
+                    var Name = property.GetPropertyValue("Name").ToString();
+                    Console.WriteLine(String.Format("Name: {0} - {1}", Name, DeviceID));
+                    list.Add(new KeyValuePair<string, string>(DeviceID, Name));
+                    //}
+                }
+
+            }
+            return list;
+        }
     }
 }
