@@ -13,6 +13,7 @@ namespace Chem.Helper
         private SerialPort port;
         public API(SerialPort port)
         {
+            Console.WriteLine(port.IsOpen);
             this.port = port;
             port.WriteLine("/1N1R\r");
         }

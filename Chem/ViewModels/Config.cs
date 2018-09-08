@@ -12,6 +12,7 @@ using Chem.Model;
 using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Management;
+using System.Text.RegularExpressions;
 
 namespace Chem.ViewModels
 {
@@ -126,14 +127,38 @@ namespace Chem.ViewModels
         private List<KeyValuePair<string, string>> ListSerialPort()
         {
             // https://docs.microsoft.com/en-us/windows/desktop/cimwin32prov/win32-serialport
-            ManagementClass processClass = new ManagementClass("Win32_SerialPort"); // Win32_PnPEntity
+            //ManagementClass processClass = new ManagementClass("Win32_SerialPort"); // Win32_PnPEntity
 
 
             var list = new List<KeyValuePair<string, string>>();
 
+
+
+            try
+            {
+                //TODO: Adjust where clause to find your device(s)
+                ManagementObjectSearcher searcher =
+                    new ManagementObjectSearcher("root\\CIMV2",
+                    "SELECT * FROM Win32_PnPEntity WHERE Name LIKE '%(COM%'");
+
+                foreach (ManagementObject queryObj in searcher.Get())
+                {
+                    var match = Regex.Match(queryObj["Name"].ToString(), @"\((.+)\)");
+                    list.Add(new KeyValuePair<string, string>(match.Groups[1].ToString(), queryObj["Name"].ToString()));
+                }
+            }
+            catch (ManagementException e)
+            {
+                System.Windows.MessageBox.Show("An error occurred while querying for WMI data: " + e.Message);
+            }
+            return list;
+
+
+            /*
             ManagementObjectCollection Ports = processClass.GetInstances();
             foreach (ManagementObject property in Ports)
             {
+                //Console.WriteLine(property);
                 if (property.GetPropertyValue("Name") != null)
                 {
                     //if (property.GetPropertyValue("Name").ToString().Contains("COM"))
@@ -147,6 +172,7 @@ namespace Chem.ViewModels
 
             }
             return list;
+            */
         }
     }
 }

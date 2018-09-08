@@ -46,55 +46,28 @@ namespace Chem.ViewModels
             };
 
             //Worker = new List<Model.Worker>();
-            try
-            {
-                port = new SerialPort("COM5", 9600, Parity.None, 8, StopBits.One);
-                port.Open();
-                port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
-                Console.WriteLine("Connect SerialPort Success");
-                api = new API(port);
-            } catch (Exception e)
-            {
-                Console.WriteLine("Can't Connect SerialPort: " + e);
-            }
-        }
-
-
-        /*
-        private void SerialPortProgram(string args)
-        {
-            Console.WriteLine("Incoming Data:");
-            if (!(port.IsOpen))
-            {
-                // Attach a method to be called when there
-                // is data waiting in the port's buffer
-
-                // Begin communications
-                port.Open();
-                port.Write("/1ZR\r");
-
-                // Enter an application loop to keep this thread alive
-                //Application.Run();
-            }
-            else
-            {
-                Console.WriteLine("port open: " + args);
-                //port.Write("/1ZR\r");
-                //MessageBox.Show(args);
-                //port.Write("/1ZR\r");
-                //port.WriteLine("/1ZIP" + args + "R\r");
-                byte[] asciiBytes = Encoding.ASCII.GetBytes(args);
-                string s2 = Encoding.ASCII.GetString(asciiBytes);
-                Console.WriteLine("port open2: " + s2);
-                
-                port.Write(s2);
-            }
+            //SerialPort("");
 
         }
-        */
 
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+
+
+            //int intBuffer;
+            //intBuffer = port.BytesToRead;
+            //byte[] byteBuffer = new byte[intBuffer];
+            //port.Read(byteBuffer, 0, intBuffer); //<--- YOU ARE READING (AND DISCARDING) DATA HERE
+            //Console.WriteLine(System.Text.Encoding.UTF8.GetString(byteBuffer));
+
+
+
+
+
+
+
+
+
             // Show all the incoming data in the port's buffer
             Console.WriteLine(port.ReadExisting());
         }
@@ -220,7 +193,7 @@ namespace Chem.ViewModels
             Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
             {
-                string oldVolume = "0"; // default value
+                string oldVolume = null; // default value
                 for (int j = 0; j < Worker.Count; j++)
                 {
                     Model.Worker worker = Worker[j];
@@ -400,12 +373,43 @@ namespace Chem.ViewModels
         #region Connect
         private void Connect(object parameters)
         {
-            
-            
             Console.WriteLine(parameters);
+            if (!string.IsNullOrWhiteSpace((string)parameters))
+                SerialPort(parameters.ToString());
         }
         #endregion
         #endregion
 
+        private void SerialPort(string comPort)
+        {
+            if (string.IsNullOrEmpty(comPort))
+                return;
+
+            try
+            {
+                if (port.IsOpen)
+                    port.Close();
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("null ref");
+            }
+            // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
+
+            try
+            {
+                port = new SerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
+                port.WriteTimeout = 2000;
+                //port.Encoding = Encoding.GetEncoding(1252);
+                port.Open();
+                port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+                Console.WriteLine("Connect SerialPort Success");
+                api = new API(port);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Can't Connect SerialPort: " + e);
+            }
+        }
     }
 }
