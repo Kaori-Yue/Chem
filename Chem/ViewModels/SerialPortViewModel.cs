@@ -130,10 +130,14 @@ namespace Chem.ViewModels
         //public RelayCommand ChangeAccentCommand { get; set; }
         #endregion
 
+        Thread thread;
+
         #region button
         #region SetZero
         private void SetZero(object parameter)
         {
+            if (thread != null)
+                thread.Abort();
             api.SetZero();
         }
         #endregion
@@ -181,7 +185,7 @@ namespace Chem.ViewModels
         #region Run
         private void Run(object parameter)
         {
-            Thread thread = new Thread(new ThreadStart(RunMe));
+            thread = new Thread(new ThreadStart(RunMe));
             thread.Start();
             //thread.
         }

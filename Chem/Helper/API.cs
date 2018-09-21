@@ -101,8 +101,6 @@ namespace Chem.Helper
             Release(volume, speed, portn);
 
 
-
-
             //int deley = ((Math.Abs(((int.Parse(volume) / 9600) * 1200) - ((int.Parse(oldVolume) / 9600) * 1200)) / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
             //int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
 
