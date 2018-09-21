@@ -190,7 +190,7 @@ namespace Chem.ViewModels
             int cycle = Int32.Parse(Cycle);
             //int water = 0;
             Console.WriteLine(cycle);
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             for (int i = 0; i < cycle; i++)
             {
                 string oldVolume = null; // default value
@@ -201,12 +201,12 @@ namespace Chem.ViewModels
                     {
                         if (worker.Pump == "L")
                         {
-                            Console.WriteLine(string.Concat((int)(float.Parse(worker.Volume) * 9600)));
+                            Console.WriteLine("delay VM" + string.Concat((int)(float.Parse(worker.Volume) * 9600)));
                             api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
                         }
                         else
                         {
-                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, oldVolume);
                             //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
                         }
                     } else
@@ -218,7 +218,7 @@ namespace Chem.ViewModels
                         }
                         else
                         {
-                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait);
+                            api.ChangeValve_Release(worker.Value, string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed, worker.Wait, oldVolume);
                             //api.SetSyring(string.Concat((int)(float.Parse(worker.Volume) * 9600)), worker.Speed);
                         }
                     }
@@ -380,6 +380,20 @@ namespace Chem.ViewModels
         #endregion
         #endregion
 
+        private string _SerialPortText;
+        public string SerialPortText
+        {
+            get
+            {
+                return _SerialPortText;
+            }
+            set
+            {
+                _SerialPortText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void SerialPort(string comPort)
         {
             if (string.IsNullOrEmpty(comPort))
@@ -388,27 +402,35 @@ namespace Chem.ViewModels
             try
             {
                 if (port.IsOpen)
+                {
                     port.Close();
+                    SerialPortText = "Unconnected";
+                }
+
             }
             catch(NullReferenceException)
             {
                 Console.WriteLine("null ref");
+                SerialPortText = "Unconnected";
             }
             // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
 
             try
             {
-                port = new SerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
+                
+                port = new SerialPort(comPort, 9600, Parity.None, 8, StopBits.One);
                 port.WriteTimeout = 2000;
                 //port.Encoding = Encoding.GetEncoding(1252);
                 port.Open();
                 port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
                 Console.WriteLine("Connect SerialPort Success");
                 api = new API(port);
+                SerialPortText = "Connect Success";
             }
             catch (Exception e)
             {
                 Console.WriteLine("Can't Connect SerialPort: " + e);
+                SerialPortText = "Unconnected";
             }
         }
     }

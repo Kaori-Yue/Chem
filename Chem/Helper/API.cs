@@ -25,6 +25,8 @@ namespace Chem.Helper
         {
             //port.WriteLine("/1IA24000R\r");
             port.WriteLine("/1ZR\r");
+            Thread.Sleep(2000);
+            port.WriteLine("/2ZR\r");
             //port.WriteLine("/1Z10R\r"); // RESET
             //for (int i = 0; i < 10; i++)
             //{
@@ -42,12 +44,13 @@ namespace Chem.Helper
             if (oldVolume == null)
             {
                 Console.WriteLine("null");
-                int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
-                Console.WriteLine("delay : " + deley);
+                int deley = ((((int.Parse(volume)/9600) * 1200) / int.Parse(speed)) * 1000) + 3000 + int.Parse(wait) * 1000;
+
+                Console.WriteLine("delay API : " + volume);
                 Thread.Sleep(deley);
             } else
             {
-                int deley = ((Math.Abs(((int.Parse(volume) / 9600) * 1200) - ((int.Parse(oldVolume) / 9600) * 1200)) / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
+                int deley = ((Math.Abs(((int.Parse(volume)/9600) * 1200) - ((int.Parse(oldVolume)) * 1200)) / int.Parse(speed)) * 1000) + 3000 + int.Parse(wait) * 1000;
                 Console.WriteLine("delay : " + deley);
                 Thread.Sleep(deley);
             }
@@ -85,17 +88,40 @@ namespace Chem.Helper
         private void Release(string volume, string speed, string portn)
         {
             //port.WriteLine("/2O"+ portn +"R\r");
+            Console.WriteLine("Call " + volume);
             port.WriteLine("/1OV" + speed + "A" + volume + "R\r");
             // etc
         }
 
-        public void ChangeValve_Release(string portn, string volume, string speed, string wait)
+        public void ChangeValve_Release(string portn, string volume, string speed, string wait, string oldVolume)
         {
+            
             port.WriteLine("/2O" + portn + "R\r");
             Thread.Sleep(3000);
             Release(volume, speed, portn);
-            int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
-            Thread.Sleep(deley);
+
+
+
+
+            //int deley = ((Math.Abs(((int.Parse(volume) / 9600) * 1200) - ((int.Parse(oldVolume) / 9600) * 1200)) / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
+            //int deley = (((int.Parse(volume) / 9600) * 1200 / int.Parse(speed)) * 1000) + 5000 + int.Parse(wait) * 1000;
+
+
+            if (oldVolume == null)
+            {
+                Console.WriteLine("null");
+                int deley = ((((int.Parse(volume) / 9600) * 1200) / int.Parse(speed)) * 1000) + 3000 + int.Parse(wait) * 1000;
+
+                Console.WriteLine("delay API : " + volume);
+                Thread.Sleep(deley);
+            }
+            else
+            {
+                float deley = ((Math.Abs(((int.Parse(volume) / 9600) * 1200) - ((float.Parse(oldVolume)) * 1200)) / int.Parse(speed)) * 1000) + 3000 + int.Parse(wait) * 1000;
+                Console.WriteLine("delay : " + deley);
+                Thread.Sleep((int)deley);
+            }
+            //Thread.Sleep(deley);
         }
 
         // release l

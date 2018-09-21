@@ -107,6 +107,7 @@ namespace Chem.ViewModels
         //////////////////////////////////////////////////////////////////////////////////
         // Serial Port
 
+        
 
 
         private string _SerialPortSelected;
