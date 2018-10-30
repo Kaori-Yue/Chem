@@ -76,10 +76,17 @@
     <Compile Include="UserControl\Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\Queue.xaml.cs">
+      <DependentUpon>Queue.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\SerialPortViewModel.cs" />
     <Compile Include="ViewModels\Config.cs" />
     <Compile Include="ViewModels\Wrapper.cs" />
     <Page Include="UserControl\Config.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\Queue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

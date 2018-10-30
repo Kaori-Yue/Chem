@@ -1,0 +1,85 @@
+﻿<Controls:Flyout
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Chem.UserControl"
+    
+    xmlns:Converters="clr-namespace:Chem.Views.Converters"
+    xmlns:ViewModels="clr-namespace:Chem.ViewModels"
+    xmlns:Views="clr-namespace:Chem.Views"
+    x:Class="Chem.UserControl.Queue"
+    mc:Ignorable="d"
+    d:DesignHeight="400" d:DesignWidth="1100"
+    
+    Width="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Views:MainWindow}}}"
+    IsOpen="True"
+    Header="{Binding Header}"
+ 
+    d:DataContext="{d:DesignInstance {x:Type ViewModels:Wrapper}}"
+    
+    >
+
+    <Controls:Flyout.Resources>
+        <Converters:DataGridIndexConverter x:Key="DataGridIndexConverter"/>
+    </Controls:Flyout.Resources>
+
+
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="220,0,20,0">
+                <DataGrid AlternationCount="1000" x:Name="queue_datagrid" Width="500" Height="300" SelectionMode="Single" ItemsSource="{Binding SerialPort.Worker}" CanUserSortColumns="False" AutoGenerateColumns="False">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Style.Triggers>
+                                <!--MouseOver-->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="Green"/>
+                                </MultiTrigger>
+                                <!--Click-->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="Red"/>
+                                </MultiTrigger>
+
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <!--<Condition  Value="1"/>-->
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Converter={StaticResource DataGridIndexConverter}}" Value="0"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="Gold"/>
+                                </MultiDataTrigger>
+
+
+
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="65" Header="Pump" Binding="{Binding Pump}" />
+                        <DataGridTextColumn Width="75" Header="Value" Binding="{Binding Value}" />
+                        <DataGridTextColumn Width="120" Header="Volume" Binding="{Binding Volume}" />
+                        <DataGridTextColumn Width="120" Header="Speed" Binding="{Binding Speed}" />
+                        <DataGridTextColumn Width="120" Header="Wait" Binding="{Binding Wait}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <WrapPanel VerticalAlignment="Top" Margin="0,100,0,0">
+                <StackPanel>
+                    <Button Width="100" Height="30" Content="Up" Command="{Binding SerialPort.UpCommand}" CommandParameter="{Binding SelectedIndex, ElementName=queue_datagrid}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Button Width="100" Height="30" Content="Down" Command="{Binding SerialPort.DownCommand}" CommandParameter="{Binding SelectedIndex, ElementName=queue_datagrid}"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0">
+                    <Button Width="100" Height="30" Content="Save" Command="{Binding SerialPort.SaveCommand}"/>
+                    <Button Width="100" Height="30" Content="Load" Command="{Binding SerialPort.LoadCommand}"/>
+                </StackPanel>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Controls:Flyout>
