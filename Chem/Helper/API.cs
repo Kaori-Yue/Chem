@@ -124,13 +124,4 @@ namespace Chem.Helper
 
         // release l
     }
-    class Temp
-    {
-        private String _volume;
-        public String volume
-        {
-            get { return _volume; }
-            set { _volume = value; }
-        }
-    }
 }
